@@ -17,7 +17,8 @@ package {
 
         public override function update():void
         {
-            if (Input.check("randomise"))
+            super.update();
+            if (Input.pressed("randomise"))
             {
                 key_.randomiseLetter();
             }
