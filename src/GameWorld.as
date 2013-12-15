@@ -10,9 +10,9 @@ package {
         private var key_:KeyEntity;
         private var playerBucket_:Array = new Array();
         private var currentPlayer_:uint;
+        private var alarm_:Alarm;
 
         public static const turnTime:Number = 1;
-        public var turnTimer:Alarm;
         public static const playerColours:Array = new Array(0xFF9933,
                                                             0x333333,
                                                             0x9900CC,
@@ -31,7 +31,7 @@ package {
 
         public override function end():void
         {
-            turnTimer.cancel();
+            alarm_.cancel();
         }
 
         public override function update():void
@@ -41,7 +41,7 @@ package {
 
         public function switchTurn():void
         {
-            turnTimer = FP.alarm(turnTime, switchTurn);
+            alarm_ = FP.alarm(turnTime, switchTurn);
 
             if (playerBucket_.length == 0)
             {
@@ -62,7 +62,6 @@ package {
             }
 
             currentPlayer_ = playerBucket_.pop();
-
             key_.switchTurn(currentPlayer_);
         }
 

@@ -10,7 +10,7 @@ package {
 
     public class KeyEntity extends Entity
     {
-        private const speed_:Number = 3;
+        private const speed_:Number = 1;
         private var keyGraphic_:Image = new Image(A.key);
         private var letterText_:Text = new Text("F",0,0, { color: 0x333333,
                                                            size: 26,
@@ -18,6 +18,7 @@ package {
 
         private var currentPlayer_:uint = 0;
         private var alarm_:Alarm;
+        private var holdTicks_:uint = 0;
 
         public static const dirs:Array = new Array(
                 new Array( 0, -1),
@@ -51,13 +52,17 @@ package {
 
         public override function update():void
         {
+            const tickFactor:Number = 0.1;
+
             if (Input.check("move"))
             {
-                var moveX:int = dirs[currentPlayer_][0] * speed_;
-                var moveY:int = dirs[currentPlayer_][1] * speed_;
+                const dirX:int = dirs[currentPlayer_][0];
+                const dirY:int = dirs[currentPlayer_][1];
+                const moveX:Number = dirX * speed_;
+                const moveY:Number = dirY * speed_;
 
-                x += moveX;
-                y += moveY;
+                x += moveX + dirX*holdTicks_ * tickFactor;
+                y += moveY + dirY*holdTicks_ * tickFactor;
 
                 var dispFromCentreX:int = FP.halfWidth - x;
                 var centreDirX:int = dispFromCentreX / Math.abs(dispFromCentreX);
@@ -65,13 +70,20 @@ package {
                 var centreDirY:int = dispFromCentreY / Math.abs(dispFromCentreY);
                 x += Math.abs(moveY) * centreDirX;
                 y += Math.abs(moveX) * centreDirY;
+
+                ++holdTicks_;
+            }
+            if (Input.released("move"))
+            {
+                holdTicks_ = 0;
             }
         }
 
         public function switchTurn(player:uint):void
         {
+            holdTicks_ = 0;
             currentPlayer_ = player;
-            keyGraphic_.color = GameWorld.playerColours[currentPlayer_]
+            keyGraphic_.color = GameWorld.playerColours[currentPlayer_];
         }
 
         public function randomiseLetter():void
