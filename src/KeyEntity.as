@@ -53,8 +53,18 @@ package {
         {
             if (Input.check("move"))
             {
-                x += speed_ * dirs[currentPlayer_][0];
-                y += speed_ * dirs[currentPlayer_][1];
+                var moveX:int = dirs[currentPlayer_][0] * speed_;
+                var moveY:int = dirs[currentPlayer_][1] * speed_;
+
+                x += moveX;
+                y += moveY;
+
+                var dispFromCentreX:int = FP.halfWidth - x;
+                var centreDirX:int = dispFromCentreX / Math.abs(dispFromCentreX);
+                var dispFromCentreY:int = FP.halfHeight - y;
+                var centreDirY:int = dispFromCentreY / Math.abs(dispFromCentreY);
+                x += Math.abs(moveY) * centreDirX;
+                y += Math.abs(moveX) * centreDirY;
             }
         }
 
@@ -66,14 +76,14 @@ package {
 
         public function randomiseLetter():void
         {
+            var randomTime:Number = FP.random*3;
+            randomTime = 1/randomTime + 4*GameWorld.turnTime;
+            alarm_ = FP.alarm(randomTime, randomiseLetter);
+
             var randomLetter:int = Math.round(FP.random*25) + 65;
 
             letterText_.text = String.fromCharCode(randomLetter);
             Input.define("move", randomLetter);
-
-            var randomTime:Number = FP.random*3;
-            randomTime = 1/randomTime + 3*GameWorld.turnTime;
-            alarm_ = FP.alarm(randomTime, randomiseLetter);
         }
 
     }
