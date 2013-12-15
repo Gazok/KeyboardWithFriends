@@ -20,13 +20,6 @@ package {
         private var alarm_:Alarm;
         private var holdTicks_:uint = 0;
 
-        public static const dirs:Array = new Array(
-                new Array( 0, -1),
-                new Array( 1,  0),
-                new Array( 0,  1),
-                new Array(-1,  0)
-            )
-
         public function KeyEntity(x:Number = 0, y:Number = 0)
         {
             super(x,y);
@@ -56,20 +49,36 @@ package {
 
             if (Input.check("move"))
             {
-                const dirX:int = dirs[currentPlayer_][0];
-                const dirY:int = dirs[currentPlayer_][1];
+                const dirX:int = GameWorld.playerDirs[currentPlayer_][0];
+                const dirY:int = GameWorld.playerDirs[currentPlayer_][1];
                 const moveX:Number = dirX * speed_;
                 const moveY:Number = dirY * speed_;
 
                 x += moveX + dirX*holdTicks_ * tickFactor;
                 y += moveY + dirY*holdTicks_ * tickFactor;
 
+                const offsetSpeed:Number = 3;
                 var dispFromCentreX:int = FP.halfWidth - x;
                 var centreDirX:int = dispFromCentreX / Math.abs(dispFromCentreX);
                 var dispFromCentreY:int = FP.halfHeight - y;
                 var centreDirY:int = dispFromCentreY / Math.abs(dispFromCentreY);
-                x += Math.abs(moveY) * centreDirX;
-                y += Math.abs(moveX) * centreDirY;
+
+                if (Math.abs(dispFromCentreX) < offsetSpeed && dirY != 0)
+                {
+                    x = FP.halfWidth;
+                }
+                else if (dirY != 0)
+                {
+                    x += Math.abs(moveY) * centreDirX * offsetSpeed;
+                }
+                else if (Math.abs(dispFromCentreY) < offsetSpeed && dirX != 0)
+                {
+                    y = FP.halfHeight;
+                }
+                else if (dirX != 0)
+                { 
+                    y += Math.abs(moveX) * centreDirY * offsetSpeed;
+                }
 
                 ++holdTicks_;
             }

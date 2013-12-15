@@ -18,10 +18,23 @@ package {
                                                             0x9900CC,
                                                             0xFFFFFF);
 
+        public static const playerDirs:Array = new Array(
+                new Array( 0, -1),
+                new Array( 1,  0),
+                new Array( 0,  1),
+                new Array(-1,  0)
+            )
+
+
         public function GameWorld()
         {
             key_ = new KeyEntity(300,300);
             add(key_);
+
+            for (var i:int = 0; i < 4; ++i)
+            {
+                add(new Goal(i));
+            }
         }
 
         public override function begin():void
