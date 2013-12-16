@@ -13,7 +13,7 @@ package {
         private var currentPlayer_:uint;
         private var alarm_:Alarm;
 
-        public static const turnTime:Number = 2;
+        public static const turnTime:Number = 1.5;
         public static const playerColours:Array = new Array(0xFF9933,
                                                             0x333333,
                                                             0x9900CC,
@@ -26,15 +26,19 @@ package {
                 new Array(-1,  0)
             )
 
-        public function GameWorld()
+        public function GameWorld(winner:uint = 0)
         {
-            addGraphic(Image.createRect(FP.screen.width,FP.screen.height,0x999999));
+            var bg:Image = new Image(A.bg);
+            bg.color = playerColours[winner];
+            addGraphic(bg);
+
             for (var i:uint = 0; i < 4; ++i)
             {
                 add(new Goal(i, this));
             }
 
-            key_ = new KeyEntity(300,300);
+            key_ = new KeyEntity(FP.halfWidth,FP.halfHeight);
+            key_.randomiseLetter();
             add(key_);
         }
 
@@ -45,6 +49,8 @@ package {
 
         public override function end():void
         {
+            Input.define("move");
+            key_.alarm_.cancel();
             alarm_.cancel();
         }
 
@@ -81,7 +87,7 @@ package {
 
         public function win(player:uint):void
         {
-            FP.world = new GameWorld;
+            FP.world = new WinWorld(player);
         }
     }
 

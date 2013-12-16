@@ -11,8 +11,7 @@ package {
 
         override public function init():void
         {
-            FP.console.enable();
-            FP.world = new GameWorld;
+            FP.world = new MenuWorld;
         }
     }
 }

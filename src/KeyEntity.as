@@ -17,18 +17,20 @@ package {
                                                            font: "keyFont" });
 
         private var currentPlayer_:uint = 0;
-        private var alarm_:Alarm;
+        public var alarm_:Alarm;
         private var holdTicks_:uint = 0;
 
-        public function KeyEntity(x:Number = 0, y:Number = 0)
+        public function KeyEntity(x:Number = 0, y:Number = 0, c:String = "F", col:uint = 3)
         {
             super(x,y);
 
             letterText_.centerOrigin();
+            letterText_.text = c;
             letterText_.blend = flash.display.BlendMode.OVERLAY;
             keyGraphic_.centerOrigin();
             keyGraphic_.scaleX = 0.1;
             keyGraphic_.scaleY = 0.1;
+            keyGraphic_.color = col;
             addGraphic(keyGraphic_);
             addGraphic(letterText_);
 
@@ -40,12 +42,10 @@ package {
 
         public override function added():void
         {
-            randomiseLetter();
         }
 
         public override function removed():void
         {
-            alarm_.cancel();
         }
 
         public override function update():void
@@ -121,6 +121,11 @@ package {
 
             letterText_.text = String.fromCharCode(randomLetter);
             Input.define("move", randomLetter);
+        }
+
+        public function setLetter(c:int):void
+        {
+            letterText_.text = String.fromCharCode(c);
         }
 
     }
