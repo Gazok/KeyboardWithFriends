@@ -14,6 +14,8 @@ package {
         private var scoreText_:Text = new Text("0",0,0, { size: 52,
                                                           font: "keyFont" });
 
+        private var score_:uint = 0;
+
         public function Goal(player:uint, world:GameWorld)
         {
             player_ = player;
@@ -27,6 +29,13 @@ package {
             const yComp:int = Math.abs(dirY);
 
             // Set up score text
+            scoreText_.color = GameWorld.playerColours[player];
+            scoreText_.relative = false;
+            scoreText_.x = FP.halfWidth + dirX * 40;
+            scoreText_.y = FP.halfHeight + dirY * 40;
+            scoreText_.centerOrigin();
+
+            addGraphic(scoreText_);
 
             // Set up entity
             const posX:Number = FP.halfWidth +
@@ -72,6 +81,12 @@ package {
             {
                 e.x = FP.halfWidth;
                 e.y = FP.halfHeight;
+                scoreText_.text = (++score_).toString();
+
+                if (score_ >= 10)
+                {
+                    world_.win(player_);
+                }
             }
         }
     }
