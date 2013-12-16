@@ -31,6 +31,11 @@ package {
             keyGraphic_.scaleY = 0.1;
             addGraphic(keyGraphic_);
             addGraphic(letterText_);
+
+            width = keyGraphic_.width * 0.1;
+            height = keyGraphic_.height * 0.1;
+            centerOrigin();
+            type = "key";
         }
 
         public override function added():void
@@ -58,10 +63,10 @@ package {
                 y += moveY + dirY*holdTicks_ * tickFactor;
 
                 const offsetSpeed:Number = 3;
-                var dispFromCentreX:int = FP.halfWidth - x;
-                var centreDirX:int = dispFromCentreX / Math.abs(dispFromCentreX);
-                var dispFromCentreY:int = FP.halfHeight - y;
-                var centreDirY:int = dispFromCentreY / Math.abs(dispFromCentreY);
+                const dispFromCentreX:int = FP.halfWidth - x;
+                const centreDirX:int = dispFromCentreX / Math.abs(dispFromCentreX);
+                const dispFromCentreY:int = FP.halfHeight - y;
+                const centreDirY:int = dispFromCentreY / Math.abs(dispFromCentreY);
 
                 if (Math.abs(dispFromCentreX) < offsetSpeed && dirY != 0)
                 {
@@ -76,7 +81,7 @@ package {
                     y = FP.halfHeight;
                 }
                 else if (dirX != 0)
-                { 
+                {
                     y += Math.abs(moveX) * centreDirY * offsetSpeed;
                 }
 
@@ -86,6 +91,17 @@ package {
             {
                 holdTicks_ = 0;
             }
+            /*
+            const e:Entity = collide("goal", 0, 0);
+            if (e)
+            {
+                x = FP.halfWidth;
+                y = FP.halfHeight;
+                FP.console.log("colliding: (",x,",",y,",",width,",",height,")",
+                " (",e.x,",",e.y,",",e.width,",",e.height,")");
+
+            }
+            */
         }
 
         public function switchTurn(player:uint):void

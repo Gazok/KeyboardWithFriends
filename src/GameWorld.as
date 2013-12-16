@@ -1,6 +1,7 @@
 package {
     import net.flashpunk.World;
     import net.flashpunk.FP;
+    import net.flashpunk.graphics.Image;
     import net.flashpunk.utils.Input;
     import net.flashpunk.utils.Key;
     import net.flashpunk.tweens.misc.Alarm;
@@ -12,7 +13,7 @@ package {
         private var currentPlayer_:uint;
         private var alarm_:Alarm;
 
-        public static const turnTime:Number = 1;
+        public static const turnTime:Number = 2;
         public static const playerColours:Array = new Array(0xFF9933,
                                                             0x333333,
                                                             0x9900CC,
@@ -25,16 +26,16 @@ package {
                 new Array(-1,  0)
             )
 
-
         public function GameWorld()
         {
+            addGraphic(Image.createRect(FP.screen.width,FP.screen.height,0x999999));
+            for (var i:uint = 0; i < 4; ++i)
+            {
+                add(new Goal(i, this));
+            }
+
             key_ = new KeyEntity(300,300);
             add(key_);
-
-            for (var i:int = 0; i < 4; ++i)
-            {
-                add(new Goal(i));
-            }
         }
 
         public override function begin():void
@@ -78,6 +79,10 @@ package {
             key_.switchTurn(currentPlayer_);
         }
 
+        public function win(player:uint):void
+        {
+            FP.world = new GameWorld;
+        }
     }
 
 }

@@ -305,6 +305,9 @@
 			
 			var i:int;
 			
+			// reassign text to force a recalc of TextLineMetrics and so be sure they report correct values
+			_field.htmlText = _field.htmlText;
+			
 			var tlm: TextLineMetrics;
 			var remainder: Number;
 			var tlm_y:Number = 2;
@@ -544,8 +547,7 @@
 		// Use this option when compiling with Flex SDK 3 or lower
 		// [Embed(source = '04B_03__.TTF', fontFamily = 'default')]
 		// Use this option when compiling with Flex SDK 4
-		//[Embed(source = '04B_03__.TTF', embedAsCFF = "false", fontFamily = 'default')]
-        [Embed(source = "TechnoHideo.ttf", embedAsCFF="false", fontFamily = 'default')]
+		[Embed(source = '04B_03__.TTF', embedAsCFF="false", fontFamily = 'default')]
 		/** @private */ private static var _FONT_DEFAULT:Class;
 	}
 }
